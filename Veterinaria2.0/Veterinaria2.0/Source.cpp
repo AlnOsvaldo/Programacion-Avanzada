@@ -18,20 +18,23 @@ struct nodo {
 	nodo *sig;
 };
 
+
+//cososglobales
 nodo *inicio=0, *ultimo=0, _aux;
-
 bool aceptado = 0;
-
 HINSTANCE hInst;
 HWND hWnd;
+int cont = 0;
 
-void validar(HWND);
-void agregar();
 
+//funciones
 BOOL CALLBACK Agenda(HWND, UINT, WPARAM, LPARAM);
 BOOL CALLBACK AgregarCita(HWND, UINT, WPARAM, LPARAM);
 BOOL CALLBACK Informacion(HWND, UINT, WPARAM, LPARAM);
 BOOL CALLBACK VerCita(HWND, UINT, WPARAM, LPARAM);
+void validar(HWND);
+void agregar();
+
 
 int WINAPI WinMain(HINSTANCE hIns, HINSTANCE hPrev, LPSTR cmdLine, int CShow) {
 	hInst = hIns;
@@ -54,6 +57,13 @@ BOOL CALLBACK Agenda(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 
 
 	switch (message) {
+	case WM_INITDIALOG:
+	{
+		
+
+	}
+		break;
+
 
 
 
@@ -128,6 +138,8 @@ BOOL CALLBACK AgregarCita(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 		case IDC_SALIR2:
+
+			
 			EndDialog(hDlg, 0);
 			break;
 		}
@@ -182,6 +194,7 @@ void agregar() {
 	*aux = _aux;
 
 	if (inicio == 0) {
+		
 		inicio = aux;
 		aux->sig = 0;
 		ultimo = aux;
@@ -190,7 +203,10 @@ void agregar() {
 		aux->prev = ultimo;
 		ultimo->sig = aux;
 		ultimo = aux;
+		aux->sig = 0;
 	}
+
+	BOOL CALLBACK Agenda(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 }
 void validar(HWND hDlg) {
 
@@ -205,11 +221,16 @@ void validar(HWND hDlg) {
 
 	if (!aceptado) {
 		if (_aux.nombre[0] != 0) {
-			if (numerotel == 8 || numerotel == 10 || numerotel == 10) {
+			if (numerotel == 8 || numerotel == 10 || numerotel == 12) {
 				if (_aux.costo[0] != 0) {
 					{
-						MessageBox(hDlg, "La consulta se agrego correctamente", "Hurra!", MB_OK | MB_ICONINFORMATION);
-						aceptado = 1;
+						if (_aux.especie[0] != 0) {
+							MessageBox(hDlg, "La consulta se agrego correctamente", "Hurra!", MB_OK | MB_ICONINFORMATION);
+							aceptado = 1;
+						}
+						else {
+							MessageBox(hDlg, "Ingrese la especie de la mascota", "Error", MB_OK | MB_ICONERROR);
+						}
 					}
 				}
 				else {

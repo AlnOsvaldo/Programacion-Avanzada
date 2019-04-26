@@ -24,7 +24,7 @@
 #define IDC_SALIR2                      1013
 #define IDC_SALIR3                      1014
 #define IDC_AGREGAR                     1015
-#define IDC_COMBO2                      1016
+#define IDC_BORRAR                      1017
 #define ID_INFORMACION_INFO             40001
 #define ID_AGENDA_VERAGENDA             40002
 #define ID_CITA_AGREGARCITA             40003
@@ -35,7 +35,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        110
 #define _APS_NEXT_COMMAND_VALUE         40004
-#define _APS_NEXT_CONTROL_VALUE         1017
+#define _APS_NEXT_CONTROL_VALUE         1018
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
