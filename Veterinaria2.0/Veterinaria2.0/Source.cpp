@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include"resource.h"
+#include"string.h"
 
 
 using namespace std;
@@ -15,17 +16,19 @@ struct nodo {
 	char motivo[200];
 	char especie[200];
 	char costo[200];
+	char textocont[200];
 	nodo *sig;
 };
 
 
 //cososglobales
-nodo *inicio=0, *ultimo=0, _aux;
+nodo *inicio = 0;
+nodo *ultimo = 0, _aux;
 bool aceptado = 0;
 HINSTANCE hInst;
 HWND hWnd;
 int cont = 0;
-
+int k = 0;
 
 //funciones
 BOOL CALLBACK Agenda(HWND, UINT, WPARAM, LPARAM);
@@ -34,7 +37,7 @@ BOOL CALLBACK Informacion(HWND, UINT, WPARAM, LPARAM);
 BOOL CALLBACK VerCita(HWND, UINT, WPARAM, LPARAM);
 void validar(HWND);
 void agregar();
-
+void llenalista(HWND);
 
 int WINAPI WinMain(HINSTANCE hIns, HINSTANCE hPrev, LPSTR cmdLine, int CShow) {
 	hInst = hIns;
@@ -59,7 +62,7 @@ BOOL CALLBACK Agenda(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_INITDIALOG:
 	{
-		
+		//llenalista( hDlg);
 
 	}
 		break;
@@ -82,6 +85,7 @@ BOOL CALLBACK Agenda(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 			break;
 		case IDC_AGREGACITA:
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG2), hDlg, AgregarCita);
+			llenalista(hDlg);
 			break;
 		}
 		break;
@@ -128,12 +132,20 @@ BOOL CALLBACK AgregarCita(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			SendDlgItemMessage(hDlg, IDC_EDIT5, WM_GETTEXT, sizeof(_aux.nombre), (LPARAM)_aux.costo);
 			validar(hDlg);
 			if (aceptado) {
+				
+				strcpy_s(_aux.textocont, "|");
+				strcat_s(_aux.textocont, _aux.fecha);
+				strcat_s(_aux.textocont, "|");
+				
+				
 				SendDlgItemMessage(hDlg, IDC_EDIT1, WM_SETTEXT, sizeof(_aux.nombre), (LPARAM)"");
 				SendDlgItemMessage(hDlg, IDC_EDIT2, WM_SETTEXT, sizeof(_aux.nombre), (LPARAM)"");
 				SendDlgItemMessage(hDlg, IDC_EDIT3, WM_SETTEXT, sizeof(_aux.nombre), (LPARAM)"");
 				SendDlgItemMessage(hDlg, IDC_COMBO1, WM_SETTEXT, sizeof(_aux.nombre), (LPARAM)"");
 				SendDlgItemMessage(hDlg, IDC_EDIT4, WM_SETTEXT, sizeof(_aux.nombre), (LPARAM)"");
 				SendDlgItemMessage(hDlg, IDC_EDIT5, WM_SETTEXT, sizeof(_aux.nombre), (LPARAM)"");
+			
+				
 			}
 			break;
 		}
@@ -257,4 +269,25 @@ void validar(HWND hDlg) {
 
 
 
+}
+void llenalista(HWND hDlg) {
+
+	nodo *aux = inicio;
+
+	
+
+
+
+	SendDlgItemMessage(hDlg, IDC_LIST1, LB_RESETCONTENT, 0, 0);
+	
+	while (aux!= 0) {
+
+
+		SendDlgItemMessage(hDlg, IDC_LIST1, LB_ADDSTRING, 0, (LPARAM)aux->textocont);
+		SendDlgItemMessage(hDlg, IDC_LIST1, LB_SETITEMDATA, k, k);
+		k = +1;
+		aux = aux->sig;
+	}
+
+	
 }
