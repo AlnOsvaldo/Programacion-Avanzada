@@ -1,0 +1,4 @@
+﻿  Source.cpp
+c:\users\aosal\source\repos\matrices\matrices\source.cpp(18): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+c:\users\aosal\source\repos\matrices\matrices\source.cpp(46): warning C4326: el tipo de valor devuelto de 'main' debe ser 'int' en lugar de 'void'
+  matrices.vcxproj -> C:\Users\aosal\source\repos\matrices\Debug\matrices.exe
