@@ -41,6 +41,8 @@ void multiplicacion();
 void rotacion();
 //rotacion de matriz cuaterniones
 void quaternion();
+//matriz por punto para traslacion etc
+void matrixpunto();
 
 //funcion princ
 void main() {
@@ -114,7 +116,7 @@ void main() {
 	while (fab)
 	{
 		system("cls");
-		cout << "1.Ingresar una matriz\n2.Muestra las matrices\n3.Suma\n4.Resta\n5.Multiplicacion\n6.Rotacion de un punto\n7.Matriz cuaternion\n8.Salir";
+		cout << "1.Ingresar una matriz\n2.Muestra las matrices\n3.Suma\n4.Resta\n5.Multiplicacion\n6.Rotacion de un punto\n7.Matriz cuaternion\n8.Matriz por punto\n9.Salir";
 		cout << "\nOpcion: ";
 		cin >> opc;
 		switch (opc)
@@ -149,6 +151,10 @@ void main() {
 			quaternion();
 			break;
 		case 8:
+			system("CLS");
+			matrixpunto();
+			break;
+		case 9:
 			fab = 0;
 			break;
 		default:
@@ -611,4 +617,62 @@ void quaternion() {
 	cout << "Se guardo en la lista de matrices";
 	cout << "\n";
 	system("Pause");
+}
+void matrixpunto() {
+	cout << "Selecciona la Matriz compuesta:";
+	mostrar();
+	
+	cin >> opc;
+	cout << "Ingrese el punto (x,y,z)\nx:";
+	cin >> x;
+	cout << "y:";
+	cin >> y;
+	cout << "z:";
+	cin >> z;
+
+	matriz matripunt;
+	matripunt.columnas = 1;
+	matripunt.filas = 4;
+	matripunt.elementos[0][0] = x;
+	matripunt.elementos[1][0] = y;
+	matripunt.elementos[2][0] = z;
+	matripunt.elementos[3][0] = 1;
+
+	matrizB = &matripunt;
+
+	aux = new matriz;
+	aux = inicio;
+	while (aux != 0)
+	{
+		if (aux->id == opc) {
+			matrizA = aux;
+		}
+		aux = aux->sig;
+	}
+	if (matrizA->columnas == matrizB->filas) {
+		cout << "El punto transformado es:";
+		aux = new matriz;
+		for (int i = 0; i < matrizA->filas; i++) {
+			for (int j = 0; j < matrizB->columnas; j++) {
+				aux->elementos[i][j] = 0;
+				for (int k = 0; k < matrizA->columnas; k++) {
+					aux->elementos[i][j] = aux->elementos[i][j] + matrizA->elementos[i][k] * matrizB->elementos[k][j];
+				}
+			}
+		}
+		aux->filas = matrizA->filas;
+		aux->columnas = matrizB->columnas;
+
+		cout << "\n";
+		for (int i = 0; i < aux->filas; i++) {
+			cout << endl;
+			for (int j = 0; j < aux->columnas; j++) {
+				cout << "[" << aux->elementos[i][j] << "]";
+			}
+		}
+		system("PAUSE");
+	}
+	else {
+		cout << "No se puede multiplicar esa matriz por el punto";
+	}
 }
