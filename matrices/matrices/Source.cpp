@@ -19,7 +19,7 @@ float pi = 3.1516;
 double angulo=35;
 double x, y, z;
 matriz *ultimo,*inicio=0,*aux,*auxoperacion,*matrizA,*matrizB;
-matriz rotacionx, rotaciony, rotacionz,punto, quaternions;
+matriz rotacionx, rotaciony, rotacionz,traslacion,escalasion,punto, quaternions, matriz_identida,_base,_matrizA,_matrizB,_matrizC;
 int opc;
 int ids = 1;
 
@@ -43,6 +43,11 @@ void rotacion();
 void quaternion();
 //matriz por punto para traslacion etc
 void matrixpunto();
+//para tener matriz compuesta y obten puntos
+void matrizcompuesta();
+//operaciones de puntos
+void matrizcompisporpintuchinjaja();
+
 
 //funcion princ
 void main() {
@@ -116,7 +121,7 @@ void main() {
 	while (fab)
 	{
 		system("cls");
-		cout << "1.Ingresar una matriz\n2.Muestra las matrices\n3.Suma\n4.Resta\n5.Multiplicacion\n6.Rotacion de un punto\n7.Matriz cuaternion\n8.Matriz por punto\n9.Salir";
+		cout << "1.Ingresar una matriz\n2.Muestra las matrices\n3.Suma\n4.Resta\n5.Multiplicacion\n6.Matriz compuesta * puntos\n7.Matriz cuaternion\n8.Matriz por punto\n9.Rotacion\n10.Salir";
 		cout << "\nOpcion: ";
 		cin >> opc;
 		switch (opc)
@@ -144,7 +149,7 @@ void main() {
 			break;
 		case 6:
 			system("CLS");
-			rotacion();
+			matrizcompuesta();
 			break;
 		case 7:
 			system("CLS");
@@ -155,6 +160,10 @@ void main() {
 			matrixpunto();
 			break;
 		case 9:
+			system("CLS");
+			rotacion();
+			break;
+		case 10:
 			fab = 0;
 			break;
 		default:
@@ -670,9 +679,353 @@ void matrixpunto() {
 				cout << "[" << aux->elementos[i][j] << "]";
 			}
 		}
+
 		system("PAUSE");
 	}
 	else {
 		cout << "No se puede multiplicar esa matriz por el punto";
 	}
+}
+void matrizcompuesta() {
+
+	double ex=0, ey=0, ez=0, tx=0 ,ty=0 ,tz=0;
+
+	traslacion.columnas=4;
+	traslacion.filas=4;
+	escalasion.columnas=4;
+	escalasion.filas=4;
+	{
+		traslacion.elementos[0][0] = 1;
+		traslacion.elementos[0][1] = 0;
+		traslacion.elementos[0][2] = 0;
+		traslacion.elementos[0][3] = tx;
+
+		traslacion.elementos[1][0] = 0;
+		traslacion.elementos[1][1] = 1;
+		traslacion.elementos[1][2] = 0;
+		traslacion.elementos[1][3] = ty;
+
+		traslacion.elementos[2][0] = 0;
+		traslacion.elementos[2][1] = 0;
+		traslacion.elementos[2][2] = 1;
+		traslacion.elementos[2][3] = tz;
+
+		traslacion.elementos[3][0] = 0;
+		traslacion.elementos[3][1] = 0;
+		traslacion.elementos[3][2] = 0;
+		traslacion.elementos[3][3] = 1;
+	}
+	{
+		escalasion.elementos[0][0] = ex;
+		escalasion.elementos[0][1] = 0;
+		escalasion.elementos[0][2] = 0;
+		escalasion.elementos[0][3] = 0;
+
+		escalasion.elementos[1][0] = 0;
+		escalasion.elementos[1][1] = ey;
+		escalasion.elementos[1][2] = 0;
+		escalasion.elementos[1][3] = 0;
+
+		escalasion.elementos[2][0] = 0;
+		escalasion.elementos[2][1] = 0;
+		escalasion.elementos[2][2] = ez;
+		escalasion.elementos[2][3] = 0;
+
+		escalasion.elementos[3][0] = 0;
+		escalasion.elementos[3][1] = 0;
+		escalasion.elementos[3][2] = 0;
+		escalasion.elementos[3][3] = 1;
+	}
+	{
+		matriz_identida.filas = 4;
+		matriz_identida.columnas = 4;
+		matriz_identida.elementos[0][0] = 1;
+		matriz_identida.elementos[0][1] = 0;
+		matriz_identida.elementos[0][2] = 0;
+		matriz_identida.elementos[0][3] = 0;
+
+		matriz_identida.elementos[1][0] = 0;
+		matriz_identida.elementos[1][1] = 1;
+		matriz_identida.elementos[1][2] = 0;
+		matriz_identida.elementos[1][3] = 0;
+
+		matriz_identida.elementos[2][0] = 0;
+		matriz_identida.elementos[2][1] = 0;
+		matriz_identida.elementos[2][2] = 1;
+		matriz_identida.elementos[2][3] = 0;
+
+		matriz_identida.elementos[3][0] = 0;
+		matriz_identida.elementos[3][1] = 0;
+		matriz_identida.elementos[3][2] = 0;
+		matriz_identida.elementos[3][3] = 1;
+	}
+
+
+	aux = new matriz;
+
+	_matrizC = matriz_identida;
+	_matrizA = matriz_identida;
+	_matrizB = matriz_identida;
+
+	_matrizC.filas = 4;
+	_matrizC.columnas = 4;
+
+	bool aln = 1;
+	bool simba = 1;
+
+
+	while (simba)
+	{
+		system("CLS");
+		cout << "La matriz compuesta es:";
+		
+		cout << "\n";
+		for (int i = 0; i < _matrizC.filas; i++) {
+			cout << endl;
+			for (int j = 0; j < _matrizC.columnas; j++) {
+				cout << "[" << _matrizC.elementos[i][j] << "]";
+			}
+		}
+		cout << "\n";
+	/*
+		for (int i = 0; i < matrizA->filas; i++) {
+			for (int j = 0; j < matrizB->columnas; j++) {
+				aux->elementos[i][j] = 0;
+				for (int k = 0; k < matrizA->columnas; k++) {
+					aux->elementos[i][j] = aux->elementos[i][j] + matrizA->elementos[i][k] * matrizB->elementos[k][j];
+				}
+			}
+		}
+		*/
+
+		cout << "1.Rotar 2.Trasladar 3.Escalar 4.Aplicarse en puntos (Utilizar la matriz actual)\nopc:";
+		cin >> opc;
+		switch (opc)
+		{
+		case 1:
+		{
+			cout << "Cuantos grados desea rotar?\nAngulo:";
+			cin >> angulo;
+			angulo = angulo * pi / 180;
+			cout << "En que eje deseas rotar? 1.x 2.y 3.z\nopc:";
+			cin >> opc;
+			switch (opc)
+			{
+			case 1:
+				_matrizA = _matrizC;
+				{
+					rotacionx.elementos[0][0] = 1;
+					rotacionx.elementos[0][1] = 0;
+					rotacionx.elementos[0][2] = 0;
+					rotacionx.elementos[0][3] = 0;//
+					rotacionx.elementos[1][0] = 0;
+					rotacionx.elementos[1][1] = cos(angulo*pi / 180);
+					rotacionx.elementos[1][2] = -sin(angulo*pi / 180);
+					rotacionx.elementos[1][3] = 0;//
+					rotacionx.elementos[2][0] = 0;
+					rotacionx.elementos[2][1] = sin(angulo*pi / 180);
+					rotacionx.elementos[2][2] = cos(angulo*pi / 180);
+					rotacionx.elementos[2][3] = 0;//
+					rotacionx.elementos[3][0] = 0;
+					rotacionx.elementos[3][1] = 0;
+					rotacionx.elementos[3][2] = 0;
+					rotacionx.elementos[3][3] = 1;//
+				}
+				_matrizB = rotacionx;
+				break;
+			case 2:
+				_matrizA = _matrizC;
+				{
+					rotaciony.elementos[0][0] = cos(angulo*pi / 180);
+					rotaciony.elementos[0][1] = 0;
+					rotaciony.elementos[0][2] = sin(angulo*pi / 180);
+					rotaciony.elementos[0][3] = 0;//
+					rotaciony.elementos[1][0] = 0;
+					rotaciony.elementos[1][1] = 1;
+					rotaciony.elementos[1][2] = 0;
+					rotaciony.elementos[1][3] = 0;//
+					rotaciony.elementos[2][0] = -sin(angulo*pi / 180);
+					rotaciony.elementos[2][1] = 0;
+					rotaciony.elementos[2][2] = cos(angulo*pi / 180);
+					rotaciony.elementos[2][3] = 0;//
+					rotaciony.elementos[3][0] = 0;
+					rotaciony.elementos[3][1] = 0;
+					rotaciony.elementos[3][2] = 0;
+					rotaciony.elementos[3][3] = 1;//
+				}
+				
+				_matrizB = rotaciony;
+				break;
+			case 3:
+				_matrizA = _matrizC;
+				{
+					rotacionz.elementos[0][0] = cos(angulo*pi / 180);
+					rotacionz.elementos[0][1] = sin(angulo*pi / 180);
+					rotacionz.elementos[0][2] = 0;
+					rotacionz.elementos[0][3] = 0;//
+					rotacionz.elementos[1][0] = sin(angulo*pi / 180);
+					rotacionz.elementos[1][1] = cos(angulo*pi / 180);
+					rotacionz.elementos[1][2] = 0;
+					rotacionz.elementos[1][3] = 0;//
+					rotacionz.elementos[2][0] = 0;
+					rotacionz.elementos[2][1] = 0;
+					rotacionz.elementos[2][2] = 1;
+					rotacionz.elementos[2][3] = 0;//
+					rotacionz.elementos[3][0] = 0;
+					rotacionz.elementos[3][1] = 0;
+					rotacionz.elementos[3][2] = 0;
+					rotacionz.elementos[3][3] = 1;//
+				}
+				_matrizB = rotacionz;
+				break;
+			default:
+				break;
+				}
+
+			}
+			break;
+		case 2:
+		{
+			cout << "Cuanto quiere trasladar en (x,y,z)\nx:";
+			cin >> tx;
+			cout << "y:";
+			cin >> ty;
+			cout << "z:";
+			cin >> tz;
+			{
+				traslacion.elementos[0][0] = 1;
+				traslacion.elementos[0][1] = 0;
+				traslacion.elementos[0][2] = 0;
+				traslacion.elementos[0][3] = tx;
+
+				traslacion.elementos[1][0] = 0;
+				traslacion.elementos[1][1] = 1;
+				traslacion.elementos[1][2] = 0;
+				traslacion.elementos[1][3] = ty;
+
+				traslacion.elementos[2][0] = 0;
+				traslacion.elementos[2][1] = 0;
+				traslacion.elementos[2][2] = 1;
+				traslacion.elementos[2][3] = tz;
+
+				traslacion.elementos[3][0] = 0;
+				traslacion.elementos[3][1] = 0;
+				traslacion.elementos[3][2] = 0;
+				traslacion.elementos[3][3] = 1;
+			}
+			_matrizA = _matrizC;
+			_matrizB = traslacion;
+		}
+			break;
+		case 3:
+		{
+			cout << "Cuanto quiere escalar en (x,y,z)\nx:";
+			cin >> ex;
+			cout << "y:";
+			cin >> ey;
+			cout << "z:";
+			cin >> ez;
+			{
+				escalasion.elementos[0][0] = ex;
+				escalasion.elementos[0][1] = 0;
+				escalasion.elementos[0][2] = 0;
+				escalasion.elementos[0][3] = 0;
+
+				escalasion.elementos[1][0] = 0;
+				escalasion.elementos[1][1] = ey;
+				escalasion.elementos[1][2] = 0;
+				escalasion.elementos[1][3] = 0;
+
+				escalasion.elementos[2][0] = 0;
+				escalasion.elementos[2][1] = 0;
+				escalasion.elementos[2][2] = ez;
+				escalasion.elementos[2][3] = 0;
+
+				escalasion.elementos[3][0] = 0;
+				escalasion.elementos[3][1] = 0;
+				escalasion.elementos[3][2] = 0;
+				escalasion.elementos[3][3] = 1;
+			}
+			_matrizA = _matrizC;
+			_matrizB = escalasion; 
+		}
+			break;
+		case 4:
+			matrizcompisporpintuchinjaja();
+			simba = 0;
+			break;
+		default:
+			break;
+		}
+		_matrizA.filas = 4;
+		_matrizB.columnas = 4;
+
+
+		for (int i = 0; i < _matrizA.filas; i++) {
+			for (int j = 0; j < _matrizB.columnas; j++) {
+				_matrizC.elementos[i][j] = 0;
+				for (int k = 0; k < _matrizA.columnas; k++) {
+					_matrizC.elementos[i][j] = _matrizC.elementos[i][j] + _matrizA.elementos[i][k] * _matrizB.elementos[k][j];
+				}
+			}
+		}
+	}
+}
+
+
+void matrizcompisporpintuchinjaja() {
+	_matrizA = _matrizC;
+	while (1) {
+		system("CLS");
+
+		cout << "Ingresa los puntos (x,y,z)\nx:";
+		cin >> x;
+		cout << "y:";
+		cin >> y;
+		cout << "z:";
+		cin >> z;
+		{
+			matriz matripunt;
+			matripunt.columnas = 1;
+			matripunt.filas = 4;
+			matripunt.elementos[0][0] = x;
+			matripunt.elementos[1][0] = y;
+			matripunt.elementos[2][0] = z;
+			matripunt.elementos[3][0] = 1;
+
+			_matrizB = matripunt;
+		}
+		for (int i = 0; i < _matrizA.filas; i++) {
+			for (int j = 0; j < _matrizB.columnas; j++) {
+				_matrizC.elementos[i][j] = 0;
+				for (int k = 0; k < _matrizA.columnas; k++) {
+					_matrizC.elementos[i][j] = _matrizC.elementos[i][j] + _matrizA.elementos[i][k] * _matrizB.elementos[k][j];
+				}
+			}
+		}
+
+		_matrizC.filas=4;
+		_matrizC.columnas=1;
+
+		cout << "\nEl punto es (x,y,z):\n";
+		for (int i = 0; i < _matrizC.filas; i++) {
+			cout << endl;
+			for (int j = 0; j < _matrizC.columnas; j++) {
+				cout << "[" << _matrizC.elementos[i][j] << "]";
+			}
+		}
+		cout << "\n1.Ingresar otro punto 2.Salir";
+		cin >> opc;
+		if (opc == 1) {
+
+		}
+		else {
+			break;
+		}
+		
+
+		
+
+	}
+
 }
